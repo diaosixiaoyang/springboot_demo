@@ -9,6 +9,20 @@
     <version>1.0</version>
     <packaging>pom</packaging>
 
+    <modules>
+        <module>fangxuele-ocs-parent</module>
+        <module>fangxuele-ocs-common</module>
+        <module>fangxuele-ocs-mapper</module>
+        <module>fangxuele-ocs-inter</module>
+        <module>fangxuele-ocs-service-cache</module>
+        <module>fangxuele-ocs-service-coms</module>
+        <module>fangxuele-ocs-service-m</module>
+        <module>fangxuele-ocs-service-wechat</module>
+        <module>fangxuele-ocs-api-m</module>
+        <module>fangxuele-ocs-api-wechat</module>
+        <module>fangxuele-ocs-web-coms</module>
+    </modules>
+
     <build>
         <plugins>
             <plugin>
