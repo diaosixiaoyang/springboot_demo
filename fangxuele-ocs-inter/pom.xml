@@ -5,16 +5,48 @@
 
     <groupId>com.fangxuele.ocs.inter</groupId>
     <artifactId>fangxuele-ocs-inter</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0</version>
     <packaging>jar</packaging>
 
     <name>fangxuele-ocs-inter</name>
     <description>放学了亲子活动一卡通rpc公共接口</description>
+
+    <parent>
+        <groupId>com.fangxuele.ocs.parent</groupId>
+        <artifactId>fangxuele-ocs-parent</artifactId>
+        <version>1.0</version>
+        <relativePath/>
+    </parent>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
     </properties>
+
+    <dependencies>
+        <!--内部工程-->
+        <dependency>
+            <groupId>com.fangxuele.ocs.mapper</groupId>
+            <artifactId>fangxuele-ocs-mapper</artifactId>
+        </dependency>
+
+        <!-- redis -->
+        <!-- Spring Boot Reids 依赖 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.lettuce</groupId>
+                    <artifactId>lettuce-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>
