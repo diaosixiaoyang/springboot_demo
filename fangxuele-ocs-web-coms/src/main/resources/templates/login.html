@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>登录-云宝共享书 | COMS</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" type="image/x-icon" href="" th:href="@{/img/favicon.png}">
+    <link rel="shortcut icon" type="image/x-icon" href="" th:href="@{/img/favicon.png}">
+    <link href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="../static/css/animate.css" th:href="@{/css/animate.css}" rel="stylesheet">
+    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+
+<div class="loginColumns animated fadeInDown">
+    <div class="row">
+
+        <div class="col-md-6">
+            <h2 class="font-bold">云宝共享书运营管理系统</h2>
+
+            <br/>
+
+            <p>
+                <img src="" th:src="@{/img/logo.jpg}" style="height: 230px">
+            </p>
+
+
+            <p>
+                和孩子一起，更好地看世界
+            </p>
+
+        </div>
+        <div class="col-md-6">
+            <div class="ibox-content">
+                <form class="m-t" role="form" action="" method="post">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="用户名" required="" name="username"
+                               th:value="${username}">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" placeholder="密码" required="" name="password">
+                    </div>
+
+                    <div class="alert alert-danger alert-dismissable" th:if="${msg}">
+                        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                        <span th:text="${msg}"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary block full-width m-b">登录</button>
+
+                    <a href="#">
+                        <small>忘记密码？</small>
+                    </a>
+
+                    <p class="text-muted text-center">
+                        <small>还没有注册账号？</small>
+                    </p>
+                    <a class="btn btn-sm btn-white btn-block" href="register.html" th:href="register">立即注册</a>
+                </form>
+                <p class="m-t">
+                    <small>Proudly by 放学了地球总部</small>
+                </p>
+            </div>
+        </div>
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col-md-6">
+            Copyright 北京行知合一科技有限公司
+        </div>
+        <div class="col-md-6 text-right">
+            <small>© 2017-2018</small>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>

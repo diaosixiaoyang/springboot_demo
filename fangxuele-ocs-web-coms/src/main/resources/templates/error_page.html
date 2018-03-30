@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>COMS | 出错啦！</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" type="image/x-icon" href="" th:href="@{/img/favicon.png}">
+    <link rel="shortcut icon" type="image/x-icon" href="" th:href="@{/img/favicon.png}">
+    <link href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="../static/css/animate.css" rel="stylesheet"
+          th:href="@{/css/animate.css}">
+    <link href="../static/css/style.css" rel="stylesheet" th:href="@{/css/style.css}">
+
+</head>
+
+<body class="gray-bg">
+
+
+<div class="middle-box text-center animated fadeInDown">
+    <h1 th:text="${statusCode}">出错啦！</h1>
+    <h3 class="font-bold">出错啦！请报给COMS的开发同学~</h3>
+
+    <div class="error-desc">
+        很抱歉，服务器内部出现了一些没有预期到的问题，以至于无法完成本次请求。<br/>
+        The server encountered something unexpected that didn't allow it to complete the request. We apologize.<br/>
+        <br/>
+        您可以先回主页压压惊: <br/><a href="index.html" class="btn btn-primary m-t" th:href="@{/index}">回到主页</a>
+    </div>
+</div>
+
+<!-- Mainly scripts -->
+<script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

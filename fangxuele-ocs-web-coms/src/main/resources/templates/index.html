@@ -1,0 +1,242 @@
+<!--
+*
+*  INSPINIA - Responsive Admin Theme
+*  version 2.7
+*
+-->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>云宝共享书 | COMS</title>
+    <div th:replace="layout :: htmlhead"></div>
+
+    <style>
+        .bookSummaryStyle {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 10;
+            -webkit-box-orient: vertical;
+        }
+
+        .mask {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            opacity: 0.8;
+            filter: alpha(opacity=80);
+            z-index: 99999;
+            -webkit-filter: blur(12px);
+            -moz-filter: blur(12px);
+            -ms-filter: blur(12px);
+            -o-filter: blur(12px);
+            filter: blur(12px);
+            display: none;
+        }
+
+    </style>
+</head>
+
+<body th:class="@{${session.theme}}">
+<div id="wrapper">
+    <div th:replace="fragments/left :: left">left</div>
+
+    <div id="page-wrapper" class="gray-bg">
+        <div th:replace="fragments/navbar_header :: navbar_header">navbar_header</div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="wrapper wrapper-content animated bounceInUp">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="ibox">
+                                <div class="ibox-content">
+                                    <div class="row">
+
+                                        <div class="col-lg-6">
+                                            <a href="#">
+                                                <img id="bookImage" src=""
+                                                     style="max-width: 220px;max-height: 250px;box-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);">
+                                            </a>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <h3 id="bookTitle"></h3>
+                                            <p id="bookSummary" class="bookSummaryStyle"></p>
+                                            <div class="text-right">
+                                                <button type="button" id="showMoreButton" class="btn btn-white btn-xs"
+                                                        onclick="toggleSummaryStyle()"><i class="fa fa-angle-down"></i>
+                                                    展开
+                                                </button>
+                                                <button type="button" class="btn btn-white btn-xs"
+                                                        onclick="getRandomBook()"><i
+                                                        class="fa fa-refresh"></i>
+                                                    换一本
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="sk-spinner sk-spinner-three-bounce" id="spinner">
+                                        <div class="sk-bounce1"></div>
+                                        <div class="sk-bounce2"></div>
+                                        <div class="sk-bounce3"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ibox">
+                                <div class="ibox-content">
+                                    <h3>公告</h3>
+                                    <ul class="sortable-list connectList agile-list">
+                                        <li th:class="${notice.level}" th:each="notice, noticeStat:${noticeList}">
+                                            <h3 th:text="${notice.title}"></h3>
+                                            <div th:utext="${notice.content}"></div>
+                                            <div class="agile-detail">
+                                                <i class="fa fa-clock-o"></i>
+                                                <span th:text="' '+${#calendars.format(notice.createTime,'yyyy-MM-dd')}"></span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <img src="/img/logo.jpg" style="width: 100%">
+                                </div>
+                                <div class="col-lg-5">
+                                    <img src="/img/qr_code.jpg" style="width: 100%">
+                                </div>
+                            </div>
+                            <h2>客户服务：13810012282</h2>
+                            <h3>yb@fangxuele.com</h3>
+                            <small>北京行知合一科技有限公司</small>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <hr>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12" id="avatars">
+                                    <div style="height: 60px;width: 60px;text-align: center;display: inline-block;margin-bottom: 20px"
+                                         th:each="member, memberStat:${memberList}">
+                                        <img th:id="'avatar'+${memberStat.index}" th:src="${member.headImage}"
+                                             style="height: 50px">
+                                        <div style="display:block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                                            <small th:text="${member.nickName}"></small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments/footer :: footer">footer</div>
+    </div>
+</div>
+
+<div th:replace="fragments/main_js :: main_js">main_js</div>
+
+<div class="mask"></div>
+
+<div id="christmas_pop" class="row animated fadeInUp"
+     style=" position: fixed; left: 25%; top: 10%;color: white; z-index: 999999;display: none;">
+    <div class="row text-center">
+        <div class="col-lg-12">
+            <h1 class="iconfont icon-siglyphchristmasstree" style="font-size: 80px"></h1>
+        </div>
+    </div>
+    <div class="row text-center">
+        <div class="col-lg-12">
+            <h1 style="font-size: 60px; font-weight: lighter">The awesome YanFaBu</h1>
+            <h1 style="font-size: 60px; font-weight: lighter">wishes you a great</h1>
+            <h1 style="font-size: 60px; font-weight: lighter">Merry Christmas!</h1>
+        </div>
+    </div>
+
+</div>
+
+<script src="../static/js/anime.min.js" th:src="@{/js/anime.min.js}"></script>
+
+<script>
+    $('#menu-home').addClass('active');
+
+    var myDate = new Date();
+    var fullYear = myDate.getFullYear();    //获取完整的年份(4位,1970-????)
+    var month = myDate.getMonth() > 9 ? myDate.getMonth() + 1 : '0' + (myDate.getMonth() + 1);       //获取当前月份(0-11,0代表1月)
+    var date = myDate.getDate() > 9 ? myDate.getDate() : '0' + myDate.getDate();        //获取当前日(1-31)
+    var hour = myDate.getHours() > 9 ? myDate.getHours() : '0' + myDate.getHours();        //获取当前日(1-31)
+    var currentTime = '' + fullYear + month + date + hour;
+
+    $(document).ready(function () {
+        $('#menu-home').addClass('active');
+
+        if (!sessionStorage.getItem("holidayAlert")) {
+            if (parseInt(currentTime) < 2017122600 && parseInt(currentTime) >= 2017122500) {
+                $(".mask").show();
+                $("#christmas_pop").show();
+            }
+        }
+
+        var relativeOffset = anime.timeline();
+        for (var i = 0; i < $('#avatars').children().length; i++) {
+            relativeOffset
+                .add({
+                    targets: '#avatar' + i,
+                    rotate: {
+                        value: 360,
+                        duration: 1800,
+                        easing: 'easeInOutSine'
+                    },
+                    borderRadius: 45,
+                    easing: 'linear'
+                });
+        }
+        getRandomBook();
+        $("#bookImage").click(function () {
+            getRandomBook();
+        });
+
+        $(".mask").click(function () {
+            $(".mask").hide();
+            $("#christmas_pop").hide();
+            sessionStorage.setItem("holidayAlert", "true");
+        });
+    });
+
+    function getRandomBook() {
+        // 随机获取一本图书信息，展示到COMS首页
+        $.post("getRandomBook", function (data) {
+            if (data.success) {
+                var book = data.dataMap.book;
+                $("#bookTitle").text(book.title);
+                $("#bookImage").attr("src", book.largeImage);
+                $("#bookSummary").text(book.summary);
+                $("#spinner").hide();
+            } else {
+                toastr.error(data.msg);
+            }
+        }, "json");
+    }
+
+    var i = 0;
+
+    function toggleSummaryStyle() {
+        $("#bookSummary").toggleClass("bookSummaryStyle");
+        if (i == 0) {
+            $("#showMoreButton").html("<i class=\"fa fa-angle-up\"></i> 收起");
+            i = 1;
+        } else {
+            $("#showMoreButton").html("<i class=\"fa fa-angle-down\"></i> 展开");
+            i = 0;
+        }
+    }
+</script>
+</body>
+</html>
