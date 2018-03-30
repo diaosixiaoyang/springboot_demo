@@ -208,7 +208,7 @@
         //style 添加的样式
         //每一个对象就是一个自定义的样式
         ,'customstyle':[
-            {tag:'span', name:'', label:'云宝共享书文本(微软雅黑14px)', style:'font-family: "Microsoft YaHei"; font-size: 14px; color: rgb(63, 63, 63);'}
+            {tag:'span', name:'', label:'亲子活动一卡通文本(微软雅黑14px)', style:'font-family: "Microsoft YaHei"; font-size: 14px; color: rgb(63, 63, 63);'}
         ]
 
         //打开右键菜单功能
