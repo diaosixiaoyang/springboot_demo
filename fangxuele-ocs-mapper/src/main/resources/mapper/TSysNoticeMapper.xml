@@ -1,34 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fangxuele.ocs.mapper.mapper.TSysNoticeMapper">
-  <resultMap id="BaseResultMap" type="com.fangxuele.ocs.mapper.domain.TSysNotice">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="title" jdbcType="VARCHAR" property="title" />
-    <result column="content" jdbcType="VARCHAR" property="content" />
-    <result column="level" jdbcType="VARCHAR" property="level" />
-    <result column="content_color" jdbcType="VARCHAR" property="contentColor" />
-    <result column="background_color" jdbcType="VARCHAR" property="backgroundColor" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
-    <result column="create_user" jdbcType="BIGINT" property="createUser" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="status" jdbcType="TINYINT" property="status" />
-  </resultMap>
-  <sql id="Base_Column_List">
+    <resultMap id="BaseResultMap" type="com.fangxuele.ocs.mapper.domain.TSysNotice">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="level" jdbcType="VARCHAR" property="level"/>
+        <result column="content_color" jdbcType="VARCHAR" property="contentColor"/>
+        <result column="background_color" jdbcType="VARCHAR" property="backgroundColor"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="create_user" jdbcType="BIGINT" property="createUser"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     id, title, content, level, content_color, background_color, remark, create_user, 
     create_time, update_time, status
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from t_sys_notice
-    where id = #{id,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <sql id="Notice_Column_List">
+        tsn.id, tsn.title, tsn.content, tsn.level, tsn.content_color, tsn.background_color, tsn.remark, tsn.create_user,
+        tsn.create_time, tsn.update_time, tsn.status
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_sys_notice
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_sys_notice
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.fangxuele.ocs.mapper.domain.TSysNotice">
+    <insert id="insert" parameterType="com.fangxuele.ocs.mapper.domain.TSysNotice">
     insert into t_sys_notice (id, title, content, 
       level, content_color, background_color, 
       remark, create_user, create_time, 
@@ -38,116 +42,116 @@
       #{remark,jdbcType=VARCHAR}, #{createUser,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.fangxuele.ocs.mapper.domain.TSysNotice">
-    insert into t_sys_notice
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="title != null">
-        title,
-      </if>
-      <if test="content != null">
-        content,
-      </if>
-      <if test="level != null">
-        level,
-      </if>
-      <if test="contentColor != null">
-        content_color,
-      </if>
-      <if test="backgroundColor != null">
-        background_color,
-      </if>
-      <if test="remark != null">
-        remark,
-      </if>
-      <if test="createUser != null">
-        create_user,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="updateTime != null">
-        update_time,
-      </if>
-      <if test="status != null">
-        status,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=BIGINT},
-      </if>
-      <if test="title != null">
-        #{title,jdbcType=VARCHAR},
-      </if>
-      <if test="content != null">
-        #{content,jdbcType=VARCHAR},
-      </if>
-      <if test="level != null">
-        #{level,jdbcType=VARCHAR},
-      </if>
-      <if test="contentColor != null">
-        #{contentColor,jdbcType=VARCHAR},
-      </if>
-      <if test="backgroundColor != null">
-        #{backgroundColor,jdbcType=VARCHAR},
-      </if>
-      <if test="remark != null">
-        #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="createUser != null">
-        #{createUser,jdbcType=BIGINT},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=TINYINT},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.fangxuele.ocs.mapper.domain.TSysNotice">
-    update t_sys_notice
-    <set>
-      <if test="title != null">
-        title = #{title,jdbcType=VARCHAR},
-      </if>
-      <if test="content != null">
-        content = #{content,jdbcType=VARCHAR},
-      </if>
-      <if test="level != null">
-        level = #{level,jdbcType=VARCHAR},
-      </if>
-      <if test="contentColor != null">
-        content_color = #{contentColor,jdbcType=VARCHAR},
-      </if>
-      <if test="backgroundColor != null">
-        background_color = #{backgroundColor,jdbcType=VARCHAR},
-      </if>
-      <if test="remark != null">
-        remark = #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="createUser != null">
-        create_user = #{createUser,jdbcType=BIGINT},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="status != null">
-        status = #{status,jdbcType=TINYINT},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.fangxuele.ocs.mapper.domain.TSysNotice">
+    <insert id="insertSelective" parameterType="com.fangxuele.ocs.mapper.domain.TSysNotice">
+        insert into t_sys_notice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="level != null">
+                level,
+            </if>
+            <if test="contentColor != null">
+                content_color,
+            </if>
+            <if test="backgroundColor != null">
+                background_color,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="level != null">
+                #{level,jdbcType=VARCHAR},
+            </if>
+            <if test="contentColor != null">
+                #{contentColor,jdbcType=VARCHAR},
+            </if>
+            <if test="backgroundColor != null">
+                #{backgroundColor,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.fangxuele.ocs.mapper.domain.TSysNotice">
+        update t_sys_notice
+        <set>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="level != null">
+                level = #{level,jdbcType=VARCHAR},
+            </if>
+            <if test="contentColor != null">
+                content_color = #{contentColor,jdbcType=VARCHAR},
+            </if>
+            <if test="backgroundColor != null">
+                background_color = #{backgroundColor,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="createUser != null">
+                create_user = #{createUser,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.fangxuele.ocs.mapper.domain.TSysNotice">
     update t_sys_notice
     set title = #{title,jdbcType=VARCHAR},
       content = #{content,jdbcType=VARCHAR},
@@ -161,4 +165,47 @@
       status = #{status,jdbcType=TINYINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+    <select id="selectAllEnabled" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_sys_notice
+        where status = 20
+        order by create_time DESC
+    </select>
+    <select id="getNoticeList" parameterType="map" resultType="map">
+        select
+        <include refid="Notice_Column_List"/>,
+        tsu.nick_name
+        from t_sys_notice tsn
+        LEFT JOIN t_sys_user tsu ON tsu.id = tsn.create_user
+        where 1=1
+        <if test="title != null">
+            AND tsn.title LIKE #{title}
+        </if>
+        <if test="content != null">
+            AND tsn.content LIKE #{content}
+        </if>
+        <if test="level != null">
+            AND tsn.level = #{level}
+        </if>
+        <if test="createUser != null">
+            AND tsu.id = #{createUser}
+        </if>
+        <if test="status != null">
+            and tsn.status = #{status,jdbcType=INTEGER}
+        </if>
+        <if test="dateFrom != null">
+            and tsn.create_time &gt;= #{dateFrom,jdbcType=TIMESTAMP}
+        </if>
+        <if test="dateTo != null">
+            and tsn.create_time &lt; #{dateTo,jdbcType=TIMESTAMP}
+        </if>
+        ORDER BY ${orderBy}
+    </select>
+    <select id="selectAllCreator" resultType="map">
+        SELECT
+        DISTINCT tsn.create_user,tsu.nick_name
+        FROM t_sys_notice tsn
+        LEFT JOIN t_sys_user tsu ON tsn.create_user=tsu.id
+    </select>
 </mapper>

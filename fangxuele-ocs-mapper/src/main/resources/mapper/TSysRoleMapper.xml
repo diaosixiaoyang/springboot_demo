@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fangxuele.ocs.mapper.mapper.TSysRoleMapper">
-  <resultMap id="BaseResultMap" type="com.fangxuele.ocs.mapper.domain.TSysRole">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="role" jdbcType="VARCHAR" property="role" />
-    <result column="description" jdbcType="VARCHAR" property="description" />
-    <result column="code" jdbcType="VARCHAR" property="code" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="status" jdbcType="TINYINT" property="status" />
-  </resultMap>
-  <sql id="Base_Column_List">
+    <resultMap id="BaseResultMap" type="com.fangxuele.ocs.mapper.domain.TSysRole">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="role" jdbcType="VARCHAR" property="role"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     id, role, description, code, remark, create_time, update_time, status
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from t_sys_role
-    where id = #{id,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_sys_role
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_sys_role
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.fangxuele.ocs.mapper.domain.TSysRole">
+    <insert id="insert" parameterType="com.fangxuele.ocs.mapper.domain.TSysRole">
     insert into t_sys_role (id, role, description, 
       code, remark, create_time, 
       update_time, status)
@@ -32,89 +32,89 @@
       #{code,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.fangxuele.ocs.mapper.domain.TSysRole">
-    insert into t_sys_role
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="role != null">
-        role,
-      </if>
-      <if test="description != null">
-        description,
-      </if>
-      <if test="code != null">
-        code,
-      </if>
-      <if test="remark != null">
-        remark,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="updateTime != null">
-        update_time,
-      </if>
-      <if test="status != null">
-        status,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=BIGINT},
-      </if>
-      <if test="role != null">
-        #{role,jdbcType=VARCHAR},
-      </if>
-      <if test="description != null">
-        #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="code != null">
-        #{code,jdbcType=VARCHAR},
-      </if>
-      <if test="remark != null">
-        #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=TINYINT},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.fangxuele.ocs.mapper.domain.TSysRole">
-    update t_sys_role
-    <set>
-      <if test="role != null">
-        role = #{role,jdbcType=VARCHAR},
-      </if>
-      <if test="description != null">
-        description = #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="code != null">
-        code = #{code,jdbcType=VARCHAR},
-      </if>
-      <if test="remark != null">
-        remark = #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="status != null">
-        status = #{status,jdbcType=TINYINT},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.fangxuele.ocs.mapper.domain.TSysRole">
+    <insert id="insertSelective" parameterType="com.fangxuele.ocs.mapper.domain.TSysRole">
+        insert into t_sys_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="role != null">
+                role,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="code != null">
+                code,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="role != null">
+                #{role,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="code != null">
+                #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.fangxuele.ocs.mapper.domain.TSysRole">
+        update t_sys_role
+        <set>
+            <if test="role != null">
+                role = #{role,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="code != null">
+                code = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.fangxuele.ocs.mapper.domain.TSysRole">
     update t_sys_role
     set role = #{role,jdbcType=VARCHAR},
       description = #{description,jdbcType=VARCHAR},
@@ -125,4 +125,47 @@
       status = #{status,jdbcType=TINYINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+    <select id="selectByUserId" parameterType="long" resultType="com.fangxuele.ocs.mapper.domain.TSysRole">
+        select
+        tsr.id, tsr.role, tsr.description, tsr.code, tsr.remark, tsr.create_time, tsr.update_time, tsr.status
+        from t_sys_role tsr
+        INNER JOIN t_sys_user_role tsur ON tsr.id = tsur.role_id
+        where tsur.user_id = #{userId,jdbcType=BIGINT}
+        and tsr.status = 1
+    </select>
+    <select id="selectByRoleName" parameterType="string" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_sys_role
+        where role = #{roleName,jdbcType=VARCHAR}
+    </select>
+    <select id="selectAllEnabled" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_sys_role
+        where status = 1
+    </select>
+    <select id="getRoleList" parameterType="map" resultType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from t_sys_role
+        where 1=1
+        <if test="role != null">
+            AND role LIKE #{role}
+        </if>
+        <if test="code != null">
+            AND code = #{code}
+        </if>
+        <if test="status != null">
+            and status = #{status,jdbcType=INTEGER}
+        </if>
+        <if test="dateFrom != null">
+            and create_time &gt;= #{dateFrom,jdbcType=TIMESTAMP}
+        </if>
+        <if test="dateTo != null">
+            and create_time &lt; #{dateTo,jdbcType=TIMESTAMP}
+        </if>
+        ORDER BY ${orderBy}
+    </select>
 </mapper>

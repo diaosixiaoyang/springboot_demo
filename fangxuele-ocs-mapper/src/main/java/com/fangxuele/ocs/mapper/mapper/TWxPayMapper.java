@@ -11,6 +11,8 @@ public interface TWxPayMapper {
 
     TWxPay selectByPrimaryKey(Long id);
 
+    TWxPay selectByOrderId(Long orderId);
+
     int updateByPrimaryKeySelective(TWxPay record);
 
     int updateByPrimaryKey(TWxPay record);
