@@ -20,6 +20,6 @@ public class FangxueleOcsWebComsApplication {
     public static void main(String[] args) {
         configurableApplicationContext = SpringApplication.run(FangxueleOcsWebComsApplication.class, args);
 
-        logger.warn("web-loms 启动完毕！");
+        logger.warn("web-coms 启动完毕！");
     }
 }

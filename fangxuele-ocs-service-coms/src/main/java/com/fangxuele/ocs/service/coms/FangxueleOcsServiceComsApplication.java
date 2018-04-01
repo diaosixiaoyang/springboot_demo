@@ -29,7 +29,7 @@ public class FangxueleOcsServiceComsApplication {
         DictionaryLomsServiceImpl dictionaryLomsService = configurableApplicationContext.getBean(DictionaryLomsServiceImpl.class);
         dictionaryLomsService.initDictionary();
         logger.warn("数据字典缓存初始化完成！");
-        logger.warn("service-loms 启动完毕！");
+        logger.warn("service-coms 启动完毕！");
 
     }
 }
