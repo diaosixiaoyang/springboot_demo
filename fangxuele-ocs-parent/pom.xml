@@ -35,7 +35,7 @@
         <jsoup.version>1.11.2</jsoup.version>
         <htmlunit-core-js.version>2.28</htmlunit-core-js.version>
         <htmlunit.version>2.29</htmlunit.version>
-        <dubbo.version>2.5.8</dubbo.version>
+        <dubbo.version>2.5.10</dubbo.version>
         <aliyun-java-sdk-core.version>3.6.0</aliyun-java-sdk-core.version>
         <!--放学了内部项目-->
         <fangxuele-ocs-common.version>1.0</fangxuele-ocs-common.version>
