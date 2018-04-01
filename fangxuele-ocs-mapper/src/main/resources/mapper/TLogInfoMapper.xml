@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fangxuele.ocs.mapper.mapper.TLogInfoMapper">
+  <resultMap id="BaseResultMap" type="com.fangxuele.ocs.mapper.domain.TLogInfo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="ip_address" jdbcType="VARCHAR" property="ipAddress" />
+    <result column="log_level" jdbcType="VARCHAR" property="logLevel" />
+    <result column="message" jdbcType="VARCHAR" property="message" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="module" jdbcType="INTEGER" property="module" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, create_time, ip_address, log_level, message, username, user_id, module
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_log_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_log_info
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.fangxuele.ocs.mapper.domain.TLogInfo">
+    insert into t_log_info (id, create_time, ip_address, 
+      log_level, message, username, 
+      user_id, module)
+    values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{ipAddress,jdbcType=VARCHAR}, 
+      #{logLevel,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=BIGINT}, #{module,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.fangxuele.ocs.mapper.domain.TLogInfo">
+    insert into t_log_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="ipAddress != null">
+        ip_address,
+      </if>
+      <if test="logLevel != null">
+        log_level,
+      </if>
+      <if test="message != null">
+        message,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="module != null">
+        module,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ipAddress != null">
+        #{ipAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="logLevel != null">
+        #{logLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="message != null">
+        #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="module != null">
+        #{module,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fangxuele.ocs.mapper.domain.TLogInfo">
+    update t_log_info
+    <set>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ipAddress != null">
+        ip_address = #{ipAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="logLevel != null">
+        log_level = #{logLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="message != null">
+        message = #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="module != null">
+        module = #{module,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fangxuele.ocs.mapper.domain.TLogInfo">
+    update t_log_info
+    set create_time = #{createTime,jdbcType=TIMESTAMP},
+      ip_address = #{ipAddress,jdbcType=VARCHAR},
+      log_level = #{logLevel,jdbcType=VARCHAR},
+      message = #{message,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=BIGINT},
+      module = #{module,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
