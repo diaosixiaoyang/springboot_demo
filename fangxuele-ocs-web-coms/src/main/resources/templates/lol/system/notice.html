@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>公告管理 | LOMS</title>
+    <div th:replace="layout :: htmlhead"></div>
+    <link href="../../../static/css/plugins/dualListbox/bootstrap-duallistbox.min.css"
+          th:href="@{/css/plugins/dualListbox/bootstrap-duallistbox.min.css}"
+          rel="stylesheet">
+
+</head>
+
+<body th:class="@{${session.theme}}">
+<div id="wrapper">
+    <div th:replace="fragments/left :: left">left</div>
+
+    <div id="page-wrapper" class="gray-bg">
+        <div th:replace="fragments/navbar_header :: navbar_header">navbar_header</div>
+
+        <!--面包屑开始-->
+        <div class="row wrapper border-bottom white-bg page-heading animated fadeInDown">
+            <div class="col-lg-10">
+                <h2>公告管理</h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="index.html" th:href="@{/index}">主页</a>
+                    </li>
+                    <li>
+                        <a>系统</a>
+                    </li>
+                    <li class="active">
+                        <strong>公告管理</strong>
+                    </li>
+                </ol>
+            </div>
+            <div class="col-lg-2">
+            </div>
+        </div>
+        <!--面包屑结束-->
+
+        <div class="wrapper wrapper-content animated fadeInUp">
+            <!--搜索条件开始-->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>搜索</h5>
+                            <div class="ibox-tools">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="ibox-content">
+                            <form role="form" class="form-horizontal" id="searchForm">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">标题</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" placeholder="" name="title"
+                                                       class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">内容</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" placeholder="" name="content"
+                                                       class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">公告级别</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" name="level">
+                                                    <option value="">所有</option>
+                                                    <option value="success-element">绿色</option>
+                                                    <option value="warning-element">橙色</option>
+                                                    <option value="info-element">蓝色</option>
+                                                    <option value="danger-element">红色</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">创建者</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" name="createUser">
+                                                    <option value="">所有</option>
+                                                    <option th:each="creator, creatorStat:${creators}"
+                                                            th:value="${creator.key}"
+                                                            th:text="${creator.value}"></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <div class="col-sm-4 control-label">
+                                                <label for="datepicker">创建时间</label>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <div>
+                                                    <div class="input-daterange input-group" id="datepicker">
+                                                        <input type="text" class=" form-control" id="dateFrom"
+                                                               name="dateFrom"/>
+                                                        <span class="input-group-addon">-</span>
+                                                        <input type="text" class=" form-control" id="dateTo"
+                                                               name="dateTo"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label for="status" class="col-sm-4 control-label">状态</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" id="status" name="status">
+                                                    <option value="">所有</option>
+                                                    <option th:each="status, statusStat:${statusMap}"
+                                                            th:value="${status.key}"
+                                                            th:text="${status.value}"></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group" style="text-align: center">
+                                            <div>
+                                                <button class="btn btn-primary" type="submit"><span
+                                                        class="glyphicon glyphicon-search"></span> 搜索
+                                                </button>
+                                                <button class="btn btn-white" id="clearSearch"><span
+                                                        class="glyphicon glyphicon-repeat"></span> 重置
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--搜索条件结束-->
+
+            <!--列表开始-->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-lg-12 text-right">
+                                    <button id="addNoticeButton" type="button"
+                                            class="btn btn-sm btn-outline btn-primary">
+                                        <i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;添加新公告
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover" id="dataTable">
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--列表结束-->
+
+            <!-- 编辑Modal开始 -->
+            <div class="modal inmodal fade" id="editNoticeModal" role="dialog">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span class="sr-only">Close</span>
+                            </button>
+                            <h4 class="modal-title">编辑公告</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <form class="wizard-big" role="form" id="editNoticeForm">
+                                    <input type="hidden" name="noticeId" id="s-noticeId">
+                                    <div class="col-lg-12">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <label>标题 *</label>
+                                                    <input id="s-title" name="title" type="text"
+                                                           class="form-control required">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <label>内容 *</label>
+                                                    <textarea class="form-control required" id="s-content"
+                                                              name="content"
+                                                              style="height: 200px;"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>公告级别 *</label>
+                                                    <select class="form-control required" id="s-level" name="level">
+                                                        <option value=""></option>
+                                                        <option value="success-element">绿色</option>
+                                                        <option value="warning-element">橙色</option>
+                                                        <option value="info-element">蓝色</option>
+                                                        <option value="danger-element">红色</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>内容颜色</label>
+                                                    <input id="s-contentColor" name="contentColor" type="text"
+                                                           class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>背景颜色</label>
+                                                    <input id="s-backgroundColor" name="backgroundColor" type="text"
+                                                           class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" type="submit" id="editNoticeSubmit"><span
+                                    class="glyphicon glyphicon-floppy-saved"></span>
+                                保存
+                            </button>
+                            <button type="button" class="btn btn-white" data-dismiss="modal"><span
+                                    class="glyphicon glyphicon-remove"></span>关闭
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--编辑Modal结束-->
+        </div>
+
+        <!--footer开始-->
+        <div th:replace="fragments/footer :: footer">footer</div>
+        <!--footer结束-->
+    </div>
+</div>
+
+<div th:replace="fragments/main_js :: main_js">main_js</div>
+
+<script src="../../../static/js/plugins/dualListbox/jquery.bootstrap-duallistbox.min.js"
+        th:src="@{/js/plugins/dualListbox/jquery.bootstrap-duallistbox.min.js}" type="text/javascript"
+        charset="utf-8"></script>
+
+<script>
+    editOrAdd = 'edit';
+
+    $('#menu-system').addClass('active');
+    $('#menu-system ul').addClass('collapse in').attr('aria-expanded', true)
+    $('#menu-system-notice').addClass('active');
+    $(document).ready(function () {
+
+        $('#menu-system').addClass('active');
+        $('#menu-system ul').addClass('collapse in').attr('aria-expanded', true)
+        $('#menu-system-notice').addClass('active');
+
+        // 日期选择器
+        $('#datepicker').datepicker({
+            format: "yyyy-mm-dd",
+            endDate: new Date(),
+            todayBtn: "linked",
+            language: pickerLocal,
+            autoclose: true,
+            todayHighlight: true
+        });
+
+        var searchForm = $('#searchForm');
+
+        // 搜索按钮
+        searchForm.submit(function (e) {
+            e.preventDefault();
+            dataTable.ajax.reload();
+        });
+
+        // 搜索重置按钮
+        $("#clearSearch").click(function (e) {
+            searchForm.trigger("reset");
+        });
+
+        var dataTable = $('#dataTable').DataTable({
+            language: dataTableLanguage,
+            pageLength: 20,
+            filter: false,
+            lengthChange: false,
+            autoWidth: false,
+            responsive: true,
+            serverSide: true,
+            dom: '<"html5buttons"B>lTfgitp',
+            buttons: [
+                {extend: 'copy'},
+                {extend: 'excel', title: 'ExampleFile'},
+                {
+                    extend: 'print',
+                    customize: function (win) {
+                        $(win.document.body).addClass('white-bg');
+                        $(win.document.body).css('font-size', '10px');
+
+                        $(win.document.body).find('table')
+                            .addClass('compact')
+                            .css('font-size', 'inherit');
+                    }
+                }
+            ],
+            ajax: {
+                url: "getNoticeList",
+                type: "POST",
+                data: function (data) {
+                    $.each(searchForm.serializeArray(), function (i, n) {
+                        data[n.name] = n.value;
+                    });
+                    return data;
+                }
+            },
+            columns: [
+                {
+                    title: "ID",
+                    data: "id",
+                    visible: false,
+                    orderable: false
+                }, {
+                    title: '公告',
+                    data: "title",
+                    orderable: false
+                }, {
+                    title: '公告级别',
+                    data: "levelString",
+                    orderable: false,
+                    width: 60
+                }, {
+                    title: '内容颜色',
+                    data: "content_color",
+                    orderable: false,
+                    width: 60
+                }, {
+                    title: '背景颜色',
+                    data: "background_color",
+                    orderable: false,
+                    width: 60
+                }, {
+                    title: '创建者',
+                    data: "nick_name",
+                    orderable: false,
+                    width: 80
+                }, {
+                    title: '创建时间',
+                    data: "create_time",
+                    orderable: false,
+                    width: 70
+                }, {
+                    title: '状态',
+                    data: "statusString",
+                    orderable: false,
+                    width: 35
+                }, {
+                    title: '操作',
+                    data: null,
+                    width: 50,
+                    orderable: false
+                }], "columnDefs": [
+                {
+                    "targets": [1],
+                    "render": function (data, type, full) {
+                        var retString = '<ul class="sortable-list connectList agile-list">\n' +
+                            '                <li class="' + full.level + '">\n' +
+                            '                    <h3>' + full.title + '</h3>\n' +
+                            '                    <div>' + full.content + '</div>\n' +
+                            '                </li>\n' +
+                            '            </ul>';
+                        return retString;
+                    }
+                }, {
+                    "targets": [8],
+                    "render": function (data, type, full) {
+                        var retString = '<div class="btn-group"><button data-toggle="dropdown" class="btn btn-primary btn-xs dropdown-toggle">执行<span class="caret"></span></button><ul class="dropdown-menu pull-right" style="min-width: 0px;">';
+                        retString += '<li><a href="javascript:;" id="editNotice" noticeId="' + full.id + '"><span class="glyphicon glyphicon-edit"></span> 编辑</a></li>';
+                        if (data.status == 20) {
+                            retString += '<li><a href="javascript:;" id="disableNotice" noticeId="' + full.id + '"><span class="glyphicon glyphicon-save"></span> 禁用</a></li>';
+                        } else {
+                            retString += '<li><a href="javascript:;" id="enableNotice" noticeId="' + full.id + '"><span class="glyphicon glyphicon-open"></span> 显示</a></li>';
+                            retString += '<li><a href="javascript:;" id="deleteNotice" noticeId="' + full.id + '"><span class="glyphicon glyphicon-trash"></span> 删除</a></li>';
+                        }
+                        retString += '</ul></div>';
+                        return retString;
+                    }
+                }
+            ]
+        });
+
+        $.fn.dataTable.ext.errMode = 'none'; //不显示任何错误信息
+
+        // 禁用公告
+        $("#dataTable").delegate("a[id=disableNotice]", "click", function () {
+            var noticeId = $(this).attr("noticeId");
+            swal({
+                title: "确定禁用？",
+                text: "禁用后该公告将不会显示",
+                type: "warning",
+                showCancelButton: true,
+                cancelButtonText: "取消",
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "是的"
+            }, function () {
+                $.post("disableNotice/" + noticeId, function (data) {
+                    if (data.success) {
+                        toastr.success(data.msg);
+                        dataTable.ajax.reload(null, false);
+                    } else {
+                        toastr.error(data.msg);
+                    }
+                }, "json");
+            });
+        });
+
+        // 启用公告
+        $("#dataTable").delegate("a[id=enableNotice]", "click", function () {
+            var noticeId = $(this).attr("noticeId");
+            swal({
+                title: "确定启用？",
+                text: "启用后该公告将显示到主页",
+                type: "warning",
+                showCancelButton: true,
+                cancelButtonText: "取消",
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "是的"
+            }, function () {
+                $.post("enableNotice/" + noticeId, function (data) {
+                    if (data.success) {
+                        toastr.success(data.msg);
+                        dataTable.ajax.reload(null, false);
+                    } else {
+                        toastr.error(data.msg);
+                    }
+                }, "json");
+            });
+        });
+
+        // 删除公告
+        $("#dataTable").delegate("a[id=deleteNotice]", "click", function () {
+            var noticeId = $(this).attr("noticeId");
+            swal({
+                title: "确定删除？",
+                text: "",
+                type: "warning",
+                showCancelButton: true,
+                cancelButtonText: "取消",
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "是的"
+            }, function () {
+                $.post("deleteNotice/" + noticeId, function (data) {
+                    if (data.success) {
+                        toastr.success(data.msg);
+                        dataTable.ajax.reload(null, false);
+                    } else {
+                        toastr.error(data.msg);
+                    }
+                }, "json");
+            });
+        });
+
+        var editNoticeModal = $('#editNoticeModal');
+        // 编辑公告
+        $("#dataTable").delegate("a[id=editNotice]", "click", function () {
+            var noticeId = $(this).attr("noticeId");
+            $("#editNoticeForm").trigger("reset");
+            editOrAdd = 'edit';
+            $.post("getNoticeDetail/" + noticeId, function (data) {
+                if (data.success) {
+                    var sysNotice = data.dataMap.sysNotice;
+                    $("#s-noticeId").val(sysNotice.id);
+                    $("#s-title").val(sysNotice.title);
+                    $("#s-content").val(sysNotice.content);
+                    $("#s-level option[value='" + sysNotice.level + "']").prop("selected", true);
+                    $("#s-contentColor").val(sysNotice.contentColor);
+                    $("#s-backgroundColor").val(sysNotice.backgroundColor);
+
+                    editNoticeModal.modal('show');
+                } else {
+                    toastr.error(data.msg);
+                }
+            }, "json");
+        });
+
+        // 编辑公告保存
+        $('#editNoticeSubmit').click(function (event) {
+            if (!event.isDefaultPrevented()) {
+                event.preventDefault();
+            }
+            var form = $("#editNoticeForm");
+            form.validate().settings.ignore = ":disabled,:hidden";
+            if (form.valid()) {
+                if (editOrAdd == 'edit') {
+                    $.post("editNoticeSave", form.serialize(), function (data) {
+                        if (data.success) {
+                            toastr.success(data.msg);
+                            dataTable.ajax.reload(null, false);
+                            editNoticeModal.modal("hide");
+                        } else {
+                            toastr.error(data.msg);
+                        }
+                    }, "json");
+                } else if (editOrAdd == 'add') {
+                    $.post("addNoticeSave", form.serialize(), function (data) {
+                        if (data.success) {
+                            toastr.success(data.msg);
+                            dataTable.ajax.reload(null, false);
+                            editNoticeModal.modal("hide");
+                        } else {
+                            toastr.error(data.msg);
+                        }
+                    }, "json");
+                }
+            }
+        });
+
+        // 添加公告
+        $('#addNoticeButton').click(function () {
+            $("#editNoticeForm").trigger("reset");
+            editOrAdd = 'add';
+            editNoticeModal.modal('show');
+        });
+
+    });
+
+</script>
+</body>
+</html>

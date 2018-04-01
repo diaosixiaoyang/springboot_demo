@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>角色管理 | LOMS</title>
+    <div th:replace="layout :: htmlhead"></div>
+    <link href="../../../static/css/plugins/dualListbox/bootstrap-duallistbox.min.css"
+          th:href="@{/css/plugins/dualListbox/bootstrap-duallistbox.min.css}"
+          rel="stylesheet">
+
+</head>
+
+<body th:class="@{${session.theme}}">
+<div id="wrapper">
+    <div th:replace="fragments/left :: left">left</div>
+
+    <div id="page-wrapper" class="gray-bg">
+        <div th:replace="fragments/navbar_header :: navbar_header">navbar_header</div>
+
+        <!--面包屑开始-->
+        <div class="row wrapper border-bottom white-bg page-heading animated fadeInDown">
+            <div class="col-lg-10">
+                <h2>角色管理</h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="index.html" th:href="@{/index}">主页</a>
+                    </li>
+                    <li>
+                        <a>系统</a>
+                    </li>
+                    <li class="active">
+                        <strong>角色管理</strong>
+                    </li>
+                </ol>
+            </div>
+            <div class="col-lg-2">
+            </div>
+        </div>
+        <!--面包屑结束-->
+
+        <div class="wrapper wrapper-content animated fadeInUp">
+            <!--搜索条件开始-->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>搜索</h5>
+                            <div class="ibox-tools">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="ibox-content">
+                            <form role="form" class="form-horizontal" id="searchForm">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">角色</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" placeholder="" name="role"
+                                                       class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Code</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" placeholder="" name="code"
+                                                       class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label for="status" class="col-sm-4 control-label">状态</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" id="status" name="status">
+                                                    <option value="">所有</option>
+                                                    <option th:each="status, statusStat:${statusMap}"
+                                                            th:value="${status.key}"
+                                                            th:text="${status.value}"></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <div class="col-sm-4 control-label">
+                                                <label for="datepicker">创建时间</label>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <div>
+                                                    <div class="input-daterange input-group" id="datepicker">
+                                                        <input type="text" class=" form-control" id="dateFrom"
+                                                               name="dateFrom"/>
+                                                        <span class="input-group-addon">-</span>
+                                                        <input type="text" class=" form-control" id="dateTo"
+                                                               name="dateTo"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group" style="text-align: center">
+                                            <div>
+                                                <button class="btn btn-primary" type="submit"><span
+                                                        class="glyphicon glyphicon-search"></span> 搜索
+                                                </button>
+                                                <button class="btn btn-white" id="clearSearch"><span
+                                                        class="glyphicon glyphicon-repeat"></span> 重置
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--搜索条件结束-->
+
+            <!--列表开始-->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-lg-12 text-right">
+                                    <button id="addRoleButton" type="button" class="btn btn-sm btn-outline btn-primary">
+                                        <i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;创建新角色
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover" id="dataTable">
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--列表结束-->
+
+            <!-- 编辑Modal开始 -->
+            <div class="modal inmodal fade" id="editRoleModal" role="dialog">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span>&times;</span><span
+                                    class="sr-only">Close</span></button>
+                            <h4 class="modal-title">编辑角色</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <form class="wizard-big" role="form" id="editRoleForm">
+                                    <input type="hidden" name="roleId" id="s-roleId">
+                                    <div class="col-lg-12">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <label>角色名 *</label>
+                                                    <input id="s-role" name="role" type="text"
+                                                           class="form-control required">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <label>角色描述 *</label>
+                                                    <input id="s-description" name="description" type="text"
+                                                           class="form-control required">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <label>Code</label>
+                                                    <input id="s-code" name="code" type="text"
+                                                           class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" type="submit" id="editRoleSubmit"><span
+                                    class="glyphicon glyphicon-floppy-saved"></span>
+                                保存
+                            </button>
+                            <button type="button" class="btn btn-white" data-dismiss="modal"><span
+                                    class="glyphicon glyphicon-remove"></span>关闭
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--编辑Modal结束-->
+
+            <!--分配权限Modal开始-->
+            <div class="modal inmodal fade" id="editRolePermissionModal" role="dialog">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span>&times;</span><span
+                                    class="sr-only">Close</span></button>
+                            <h4 class="modal-title">分配权限</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <form id="editRolePermissionForm" action="#" class="wizard-big">
+                                        <input type="hidden" name="roleId" id="f-roleId">
+                                        <select name="permissionSelect" id="permissionSelect"
+                                                class="form-control dual_select"
+                                                multiple>
+                                        </select>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" type="submit" id="editRolePermissionSubmit"><span
+                                    class="glyphicon glyphicon-floppy-saved"></span>
+                                保存
+                            </button>
+                            <button type="button" class="btn btn-white" data-dismiss="modal"><span
+                                    class="glyphicon glyphicon-remove"></span>关闭
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--分配权限Modal结束-->
+        </div>
+
+        <!--footer开始-->
+        <div th:replace="fragments/footer :: footer">footer</div>
+        <!--footer结束-->
+    </div>
+</div>
+
+<div th:replace="fragments/main_js :: main_js">main_js</div>
+
+<script src="../../../static/js/plugins/dualListbox/jquery.bootstrap-duallistbox.min.js"
+        th:src="@{/js/plugins/dualListbox/jquery.bootstrap-duallistbox.min.js}" type="text/javascript"
+        charset="utf-8"></script>
+
+<script>
+
+    editOrAdd = 'edit';
+
+    $('#menu-system').addClass('active');
+    $('#menu-system ul').addClass('collapse in').attr('aria-expanded', true)
+    $('#menu-system-role').addClass('active');
+    $(document).ready(function () {
+
+        $('#menu-system').addClass('active');
+        $('#menu-system ul').addClass('collapse in').attr('aria-expanded', true)
+        $('#menu-system-role').addClass('active');
+
+        // 日期选择器
+        $('#datepicker').datepicker({
+            format: "yyyy-mm-dd",
+            endDate: new Date(),
+            todayBtn: "linked",
+            language: pickerLocal,
+            autoclose: true,
+            todayHighlight: true
+        });
+
+        var searchForm = $('#searchForm');
+
+        // 搜索按钮
+        searchForm.submit(function (e) {
+            e.preventDefault();
+            dataTable.ajax.reload();
+        });
+
+        // 搜索重置按钮
+        $("#clearSearch").click(function () {
+            searchForm.trigger("reset");
+        });
+
+        var dataTable = $('#dataTable').DataTable({
+            language: dataTableLanguage,
+            pageLength: 20,
+            filter: false,
+            lengthChange: false,
+            autoWidth: false,
+            responsive: true,
+            serverSide: true,
+            dom: '<"html5buttons"B>lTfgitp',
+            buttons: [
+                {extend: 'copy'},
+                {extend: 'excel', title: 'ExampleFile'},
+                {
+                    extend: 'print',
+                    customize: function (win) {
+                        $(win.document.body).addClass('white-bg');
+                        $(win.document.body).css('font-size', '10px');
+
+                        $(win.document.body).find('table')
+                            .addClass('compact')
+                            .css('font-size', 'inherit');
+                    }
+                }
+            ],
+            ajax: {
+                url: "getRoleList",
+                type: "POST",
+                data: function (data) {
+                    $.each(searchForm.serializeArray(), function (i, n) {
+                        data[n.name] = n.value;
+                    });
+                    return data;
+                }
+            },
+            columns: [
+                {
+                    title: "ID",
+                    data: "id",
+                    orderable: false
+                }, {
+                    title: '角色',
+                    data: "role",
+                    orderable: false
+                }, {
+                    title: '描述',
+                    data: "description",
+                    orderable: false
+                }, {
+                    title: 'Code',
+                    data: "code",
+                    orderable: false
+                }, {
+                    title: '创建时间',
+                    data: "create_time",
+                    orderable: false
+                }, {
+                    title: '状态',
+                    data: "statusString",
+                    orderable: false,
+                    width: 35
+                }, {
+                    title: '操作',
+                    data: null,
+                    width: 50,
+                    orderable: false
+                }], "columnDefs": [
+                {
+                    "targets": [6],
+                    "render": function (data, type, full) {
+                        var retString = '<div class="btn-group"><button data-toggle="dropdown" class="btn btn-primary btn-xs dropdown-toggle">执行<span class="caret"></span></button><ul class="dropdown-menu pull-right" style="min-width: 0px;">';
+                        retString += '<li><a href="javascript:;" id="editRole" roleId="' + full.id + '"><span class="glyphicon glyphicon-edit"></span> 编辑</a></li>';
+                        retString += '<li><a href="javascript:;" id="editRolePermission" roleId="' + full.id + '"><span class="glyphicon glyphicon-lock"></span> 分配权限</a></li>';
+                        if (data.status == 1) {
+                            retString += '<li><a href="javascript:;" id="disableRole" roleId="' + full.id + '"><span class="glyphicon glyphicon-save"></span> 禁用</a></li>';
+                        } else {
+                            retString += '<li><a href="javascript:;" id="enableRole" roleId="' + full.id + '"><span class="glyphicon glyphicon-open"></span> 启用</a></li>';
+                        }
+                        retString += '</ul></div>';
+                        return retString;
+                    }
+                }
+            ]
+        });
+
+        // 禁用角色
+        $("#dataTable").delegate("a[id=disableRole]", "click", function () {
+            var roleId = $(this).attr("roleId");
+            swal({
+                title: "确定禁用？",
+                text: "",
+                type: "warning",
+                showCancelButton: true,
+                cancelButtonText: "取消",
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "是的"
+            }, function () {
+                $.post("disableRole/" + roleId, function (data) {
+                    if (data.success) {
+                        toastr.success(data.msg);
+                        dataTable.ajax.reload(null, false);
+                    } else {
+                        toastr.error(data.msg);
+                    }
+                }, "json");
+            });
+        });
+
+        // 启用角色
+        $("#dataTable").delegate("a[id=enableRole]", "click", function () {
+            var roleId = $(this).attr("roleId");
+            swal({
+                title: "确定启用？",
+                text: "",
+                type: "warning",
+                showCancelButton: true,
+                cancelButtonText: "取消",
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "是的"
+            }, function () {
+                $.post("enableRole/" + roleId, function (data) {
+                    if (data.success) {
+                        toastr.success(data.msg);
+                        dataTable.ajax.reload(null, false);
+                    } else {
+                        toastr.error(data.msg);
+                    }
+                }, "json");
+            });
+        });
+
+        var editRoleModal = $('#editRoleModal');
+        // 编辑角色
+        $("#dataTable").delegate("a[id=editRole]", "click", function () {
+            var roleId = $(this).attr("roleId");
+            $("#editRoleForm").trigger("reset");
+            editOrAdd = 'edit';
+            $.post("getRoleDetail/" + roleId, function (data) {
+                if (data.success) {
+                    var sysRole = data.dataMap.sysRole;
+                    $("#s-roleId").val(sysRole.id);
+                    $("#s-role").val(sysRole.role);
+                    $("#s-description").val(sysRole.description);
+                    $("#s-code").val(sysRole.code);
+
+                    editRoleModal.modal('show');
+                } else {
+                    toastr.error(data.msg);
+                }
+            }, "json");
+        });
+
+        // 编辑角色保存
+        $('#editRoleSubmit').click(function (event) {
+            if (!event.isDefaultPrevented()) {
+                event.preventDefault();
+            }
+            var form = $("#editRoleForm");
+            form.validate().settings.ignore = ":disabled,:hidden";
+            if (form.valid()) {
+                if (editOrAdd == 'edit') {
+                    $.post("editRoleSave", form.serialize(), function (data) {
+                        if (data.success) {
+                            toastr.success(data.msg);
+                            dataTable.ajax.reload(null, false);
+                            editRoleModal.modal("hide");
+                        } else {
+                            toastr.error(data.msg);
+                        }
+                    }, "json");
+                } else if (editOrAdd == 'add') {
+                    $.post("addRoleSave", form.serialize(), function (data) {
+                        if (data.success) {
+                            toastr.success(data.msg);
+                            dataTable.ajax.reload(null, false);
+                            editRoleModal.modal("hide");
+                        } else {
+                            toastr.error(data.msg);
+                        }
+                    }, "json");
+                }
+            }
+        });
+
+        // 分配权限
+        $("#dataTable").delegate("a[id=editRolePermission]", "click", function () {
+            var roleId = $(this).attr("roleId");
+            $("#f-roleId").val(roleId);
+            $("#permissionSelect").text("");
+            var dualListbox = $('#permissionSelect').bootstrapDualListbox({
+                selectorMinimalHeight: 250,
+                showFilterInputs: false,
+                infoText: '共有 {0}',
+                infoTextEmpty: '空列表'
+            });
+            $.post("getRolePermissionDetail/" + roleId, function (data) {
+                if (data.success) {
+                    var dataMap = data.dataMap;
+                    var permissionList = dataMap.permissionList;
+                    var rolePermissionList = dataMap.rolePermissionList;
+                    for (var i = 0; i < permissionList.length; i++) {
+                        dualListbox.append('<option value="' + permissionList[i].id + '">' + permissionList[i].name + '</option>');
+                    }
+
+                    for (var i = 0; i < rolePermissionList.length; i++) {
+                        $("#permissionSelect option[value='" + rolePermissionList[i].permissionId + "']").prop("selected", true);
+                    }
+
+                    dualListbox.bootstrapDualListbox('refresh');
+                    $("#editRolePermissionModal").modal('show');
+                } else {
+                    toastr.error(data.msg);
+                }
+            }, "json");
+        });
+
+        // 保存分配权限
+        $('#editRolePermissionSubmit').click(function (event) {
+            if (!event.isDefaultPrevented()) {
+                event.preventDefault();
+            }
+            var form = $("#editRolePermissionForm");
+            form.validate().settings.ignore = ":disabled,:hidden";
+            if (form.valid()) {
+                $.post("editRolePermissionSave", form.serialize(), function (data) {
+                    if (data.success) {
+                        toastr.success(data.msg);
+                        dataTable.ajax.reload(null, false);
+                        $("#editRolePermissionModal").modal("hide");
+                    } else {
+                        toastr.error(data.msg);
+                    }
+                }, "json");
+            }
+        });
+
+        // 添加角色
+        $('#addRoleButton').click(function () {
+            $("#editRoleForm").trigger("reset");
+            editOrAdd = 'add';
+            editRoleModal.modal('show');
+        });
+
+    });
+
+</script>
+</body>
+</html>

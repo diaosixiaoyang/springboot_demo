@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>全局参数 | LOMS</title>
+    <div th:replace="layout :: htmlhead"></div>
+
+</head>
+
+<body th:class="@{${session.theme}}">
+<div id="wrapper">
+    <div th:replace="fragments/left :: left">left</div>
+
+    <div id="page-wrapper" class="gray-bg">
+        <div th:replace="fragments/navbar_header :: navbar_header">navbar_header</div>
+
+        <!--面包屑开始-->
+        <div class="row wrapper border-bottom white-bg page-heading animated fadeInDown">
+            <div class="col-lg-10">
+                <h2>全局参数</h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="index.html" th:href="@{/index}">主页</a>
+                    </li>
+                    <li>
+                        <a>系统</a>
+                    </li>
+                    <li class="active">
+                        <strong>全局参数</strong>
+                    </li>
+                </ol>
+            </div>
+            <div class="col-lg-2">
+            </div>
+        </div>
+        <!--面包屑结束-->
+
+        <div class="wrapper wrapper-content animated fadeInUp">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-content">
+                            <a type="button" class="btn btn-outline btn-primary"
+                               href="javascript:void(0);" onclick="refreshSolr()"><i
+                                    class="fa fa-refresh"></i>&nbsp;&nbsp;刷新solr</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-lg-12 text-right">
+                                    <a type="button" class="btn btn-outline btn-primary"
+                                       href="javascript:void(0);"
+                                       onclick="refreshConfig()">
+                                        <i class="fa fa-refresh"></i>&nbsp;&nbsp;同步到所有微服务
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row" th:each="config, configStat:${configMap}">
+                                <label class="col-lg-3 text-right" th:text="${config.key}"></label>
+                                <div class="col-lg-9">
+                                    <div class="input-group"><input type="text" class="form-control"
+                                                                    th:value="${config.value}"
+                                                                    th:attr="id=${config.key}">
+                                        <span class="input-group-btn">
+                                                <button type="button" class="btn btn-primary"
+                                                        th:attr="configKey=${config.key}"
+                                                        onclick="saveConfig(this);">保存</button>
+                                            </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-lg-12 text-right">
+                                    <label class="col-lg-3 text-right">一键删除(小博专用)</label>
+                                    <div class="col-lg-9">
+                                        <form id="form">
+                                            <div class="input-group">
+                                                <input type="text" id="customerId" placeholder="输入customerId删除用户信息"
+                                                       class="form-control required number">
+                                                <span class="input-group-btn">
+                                                <button type="button" id="deleteCustomer"
+                                                        class="btn btn-primary">删除</button>
+                                            </span>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--footer开始-->
+        <div th:replace="fragments/footer :: footer">footer</div>
+        <!--footer结束-->
+    </div>
+</div>
+
+<div th:replace="fragments/main_js :: main_js">main_js</div>
+
+<script>
+    // 同步/刷新
+    function refreshSolr() {
+        $.get("refreshSolr", function (data) {
+            if (data.success) {
+                toastr.success(data.msg);
+            } else {
+                toastr.error(data.msg);
+            }
+        }, "json");
+    }
+
+    // 保存
+    function saveConfig(ele) {
+        var configKey = $(ele).attr("configKey");
+        var configValue = $("#" + configKey).val();
+
+        $.post("saveConfig", {configKey: configKey, configValue: configValue}, function (data) {
+            if (data.success) {
+                refreshConfig();
+                toastr.success(data.msg);
+            } else {
+                toastr.error(data.msg);
+            }
+        }, "json");
+    }
+
+    // 同步/刷新
+    function refreshConfig() {
+        $.get("refreshConfig", function (data) {
+            if (data.success) {
+                var resultList = data.dataMap.resultList;
+                for (var i = 0; i < resultList.length; i++) {
+                    var resultMap = resultList[i];
+                    if (resultMap.success == 'true') {
+                        toastr.success(resultMap.msg);
+                    } else {
+                        toastr.error(resultMap.msg);
+                    }
+                }
+            } else {
+                toastr.error(data.msg);
+            }
+        }, "json");
+    }
+
+    $('#menu-system').addClass('active');
+    $('#menu-system ul').addClass('collapse in').attr('aria-expanded', true)
+    $('#menu-system-global').addClass('active');
+    $(document).ready(function () {
+
+        $('#menu-system').addClass('active');
+        $('#menu-system ul').addClass('collapse in').attr('aria-expanded', true)
+        $('#menu-system-global').addClass('active');
+
+    });
+
+    $("#deleteCustomer").click(function () {
+        if ($("#form").valid()) {
+            var customerId = $("#customerId").val();
+            $.get("getCustomerInfo/" + customerId, function (data) {
+                if (data.success) {
+                    swal({
+                        title: data.msg,
+                        type: "warning",
+                        showCancelButton: true,
+                        cancelButtonText: "取消",
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "确认"
+                    }, function () {
+                        $.get("deleteCustomerInfo/" + customerId, function (data) {
+                            if (data.success) {
+                                toastr.success(data.msg);
+                            } else {
+                                toastr.error(data.msg);
+                            }
+                        })
+                    });
+                } else {
+                    toastr.error(data.msg);
+                }
+            })
+        }
+    })
+
+</script>
+</body>
+</html>

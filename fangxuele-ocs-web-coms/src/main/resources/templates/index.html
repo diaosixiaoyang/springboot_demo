@@ -55,39 +55,6 @@
                         <div class="col-lg-6">
                             <div class="ibox">
                                 <div class="ibox-content">
-                                    <div class="row">
-
-                                        <div class="col-lg-6">
-                                            <a href="#">
-                                                <img id="bookImage" src=""
-                                                     style="max-width: 220px;max-height: 250px;box-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);">
-                                            </a>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <h3 id="bookTitle"></h3>
-                                            <p id="bookSummary" class="bookSummaryStyle"></p>
-                                            <div class="text-right">
-                                                <button type="button" id="showMoreButton" class="btn btn-white btn-xs"
-                                                        onclick="toggleSummaryStyle()"><i class="fa fa-angle-down"></i>
-                                                    展开
-                                                </button>
-                                                <button type="button" class="btn btn-white btn-xs"
-                                                        onclick="getRandomBook()"><i
-                                                        class="fa fa-refresh"></i>
-                                                    换一本
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="sk-spinner sk-spinner-three-bounce" id="spinner">
-                                        <div class="sk-bounce1"></div>
-                                        <div class="sk-bounce2"></div>
-                                        <div class="sk-bounce3"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="ibox">
-                                <div class="ibox-content">
                                     <h3>公告</h3>
                                     <ul class="sortable-list connectList agile-list">
                                         <li th:class="${notice.level}" th:each="notice, noticeStat:${noticeList}">
@@ -198,10 +165,6 @@
                     easing: 'linear'
                 });
         }
-        getRandomBook();
-        $("#bookImage").click(function () {
-            getRandomBook();
-        });
 
         $(".mask").click(function () {
             $(".mask").hide();
@@ -210,33 +173,6 @@
         });
     });
 
-    function getRandomBook() {
-        // 随机获取一本图书信息，展示到COMS首页
-        $.post("getRandomBook", function (data) {
-            if (data.success) {
-                var book = data.dataMap.book;
-                $("#bookTitle").text(book.title);
-                $("#bookImage").attr("src", book.largeImage);
-                $("#bookSummary").text(book.summary);
-                $("#spinner").hide();
-            } else {
-                toastr.error(data.msg);
-            }
-        }, "json");
-    }
-
-    var i = 0;
-
-    function toggleSummaryStyle() {
-        $("#bookSummary").toggleClass("bookSummaryStyle");
-        if (i == 0) {
-            $("#showMoreButton").html("<i class=\"fa fa-angle-up\"></i> 收起");
-            i = 1;
-        } else {
-            $("#showMoreButton").html("<i class=\"fa fa-angle-down\"></i> 展开");
-            i = 0;
-        }
-    }
 </script>
 </body>
 </html>

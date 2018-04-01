@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>前端重定向 | LOMS</title>
+    <div th:replace="layout :: htmlhead"></div>
+
+</head>
+
+<body th:class="@{${session.theme}}">
+<div id="wrapper">
+    <div th:replace="fragments/left :: left">left</div>
+
+    <div id="page-wrapper" class="gray-bg">
+        <div th:replace="fragments/navbar_header :: navbar_header">navbar_header</div>
+
+        <!--面包屑开始-->
+        <div class="row wrapper border-bottom white-bg page-heading animated fadeInDown">
+            <div class="col-lg-10">
+                <h2>前端重定向</h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="index.html" th:href="@{/index}">主页</a>
+                    </li>
+                    <li>
+                        <a>系统</a>
+                    </li>
+                    <li class="active">
+                        <strong>前端重定向</strong>
+                    </li>
+                </ol>
+            </div>
+            <div class="col-lg-2">
+            </div>
+        </div>
+        <!--面包屑结束-->
+
+        <div class="wrapper wrapper-content animated fadeInUp">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-content">
+                            <ul class="sortable-list connectList agile-list">
+                                <li>
+                                    <h3>说明：</h3>
+                                    <div>
+                                        <p>在推文、菜单等场景需要跳转到前端页面时，为防止用户本地缓存， </p>
+                                        <p>可先添加一条本配置参数，</p>
+                                        <p>然后在推文等有跳转前端页面需求时，填写下面的链接，即可跳转到该推送类型码所对应的前端页面：</p>
+                                        <br/>
+                                        <h3>http://rb-api.fangxuele.com/lol/m/api/push/pushRedirect/对应跳转链接的推送类型码</h3>
+                                    </div>
+                                </li>
+                            </ul>
+                            <form id="addForm">
+                                <div class="row">
+                                    <div class="col-lg-2">
+                                        <input type="text" class="form-control" id="type" placeholder="推送类型码" required>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <input type="text" class="form-control" id="linkUrl" placeholder="跳转到前端链接"
+                                               required>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <button type="submit" class="btn btn-warning btn-sm">添加</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-lg-2 text-right">
+                                    <label>推送类型码</label>
+                                </div>
+                                <div class="col-lg-10">
+                                    <label>跳转到前端链接</label>
+                                </div>
+                            </div>
+                            <div class="row" th:each="config, configStat:${configMap}">
+                                <label class="col-lg-2 text-right" th:text="${config.key}"></label>
+                                <div class="col-lg-8">
+                                    <input type="text" class="form-control" th:value="${config.value}"
+                                           th:attr="id=${config.key}">
+                                </div>
+                                <div class="col-lg-2">
+                                    <button type="button" class="btn btn-danger btn-sm"
+                                            th:attr="configKey=${config.key}"
+                                            onclick="deleteConfig(this);" style="margin-right: 10px">删除
+                                    </button>
+                                    <button type="button" class="btn btn-primary btn-sm"
+                                            th:attr="configKey=${config.key}"
+                                            onclick="saveConfig(this);">保存
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--footer开始-->
+        <div th:replace="fragments/footer :: footer">footer</div>
+        <!--footer结束-->
+    </div>
+</div>
+
+<div th:replace="fragments/main_js :: main_js">main_js</div>
+
+<script>
+
+    // 保存
+    function saveConfig(ele) {
+        var configKey = $(ele).attr("configKey");
+        var configValue = $("#" + configKey).val();
+
+        $.post("saveConfig", {configKey: configKey, configValue: configValue}, function (data) {
+            if (data.success) {
+                toastr.success(data.msg);
+            } else {
+                toastr.error(data.msg);
+            }
+        }, "json");
+    }
+
+    // 删除
+    function deleteConfig(ele) {
+        var configKey = $(ele).attr("configKey");
+        var configValue = $("#" + configKey).val();
+
+        $.post("deleteConfig", {configKey: configKey, configValue: configValue}, function (data) {
+            if (data.success) {
+                toastr.success(data.msg);
+                window.location.reload();
+            } else {
+                toastr.error(data.msg);
+            }
+        }, "json");
+    }
+
+    $('#menu-system').addClass('active');
+    $('#menu-system ul').addClass('collapse in').attr('aria-expanded', true)
+    $('#menu-system-pushRedirect').addClass('active');
+    $(document).ready(function () {
+
+        $('#menu-system').addClass('active');
+        $('#menu-system ul').addClass('collapse in').attr('aria-expanded', true)
+        $('#menu-system-pushRedirect').addClass('active');
+
+        var addForm = $("#addForm");
+        addForm.submit(function () {
+
+            addForm.validate().settings.ignore = ":disabled,:hidden";
+            if (addForm.valid()) {
+                var configKey = $('#type').val();
+                var configValue = $('#linkUrl').val();
+
+                $.post("saveConfig", {configKey: configKey, configValue: configValue}, function (data) {
+                    if (data.success) {
+                        toastr.success(data.msg);
+                        window.location.reload();
+                    } else {
+                        toastr.error(data.msg);
+                    }
+                }, "json");
+            }
+
+        });
+
+    });
+
+</script>
+</body>
+</html>
