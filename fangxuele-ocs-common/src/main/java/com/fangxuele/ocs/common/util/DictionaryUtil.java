@@ -1,6 +1,6 @@
 package com.fangxuele.ocs.common.util;
 
-import com.fangxuele.ocs.common.constant.LolConstant;
+import com.fangxuele.ocs.common.constant.OcsConstant;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 
@@ -227,7 +227,7 @@ public class DictionaryUtil {
         if (value == null) {
             return StringUtils.EMPTY;
         }
-        return getString(classCode, value, LolConstant.defaultLanguage);
+        return getString(classCode, value, OcsConstant.DEFAULT_LANGUAGE);
     }
 
     public static String getString(String classCode, Integer value, String language) {
@@ -240,12 +240,12 @@ public class DictionaryUtil {
     }
 
     public static Map<Integer, String> getStatueMap(String classCode) {
-        return getStatueMap(classCode, LolConstant.defaultLanguage);
+        return getStatueMap(classCode, OcsConstant.DEFAULT_LANGUAGE);
     }
 
     public static Map<Integer, String> getStatueMap(String classCode, String language) {
         if (StringUtils.isEmpty(language)) {
-            language = LolConstant.defaultLanguage;
+            language = OcsConstant.DEFAULT_LANGUAGE;
         }
         Map<String, Map<Integer, String>> codeMap = DictionaryUtil.statusClassMap.get(classCode);
         return codeMap.get(language);

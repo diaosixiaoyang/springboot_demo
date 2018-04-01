@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * @author rememberber(https://github.com/rememberber)
+ * @author rememberber(https : / / github.com / rememberber)
  */
-public class SysMenu implements Serializable{
+public class SysMenu implements Serializable {
     private static final long serialVersionUID = 3993984085907429327L;
 
     private String title;

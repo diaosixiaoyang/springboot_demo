@@ -5,7 +5,7 @@ import org.springside.modules.utils.text.EncodeUtil;
 import org.springside.modules.utils.text.HashUtil;
 
 /**
- * @author rememberber(https://github.com/rememberber)
+ * @author rememberber(https : / / github.com / rememberber)
  */
 public class EntryptUtil {
 

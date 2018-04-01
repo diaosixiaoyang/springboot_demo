@@ -40,7 +40,9 @@ public class HttpClientUtil {
 
     private static CloseableHttpClient httpClient;
 
-    // 创建包含connection pool与超时设置的client
+    /**
+     * 创建包含connection pool与超时设置的client
+     */
     public static void init() {
         RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(TIMEOUT_SECONDS * 1000)
                 .setConnectTimeout(TIMEOUT_SECONDS * 1000).build();

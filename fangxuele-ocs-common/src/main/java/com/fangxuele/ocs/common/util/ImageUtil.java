@@ -14,12 +14,13 @@ public class ImageUtil {
 
     /**
      * 通过图片url返回图片Bitmap
+     *
      * @param path
      * @return
      */
     public static InputStream returnBitMap(String path) {
         URL url = null;
-        InputStream is =null;
+        InputStream is = null;
         try {
             url = new URL(path);
         } catch (MalformedURLException e) {

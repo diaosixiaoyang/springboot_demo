@@ -1,7 +1,7 @@
 package com.fangxuele.ocs.web.coms.service;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.fangxuele.ocs.common.constant.LolConstant;
+import com.fangxuele.ocs.common.constant.OcsConstant;
 import com.fangxuele.ocs.common.constant.RedisCacheConstant;
 import com.fangxuele.ocs.common.util.ImageUtil;
 import com.fangxuele.ocs.inter.cache.service.RedisCacheService;
@@ -126,10 +126,10 @@ public class ImageService {
         if (StringUtils.isEmpty(token)) {
             // 如果为空，表示token有效期已经
             Auth auth = Auth.create(qiniuAk, qiniuSK);
-            token = auth.uploadToken(qiniuBucket, null, LolConstant.SECONDS_OF_ONE_DAY, null, true);
+            token = auth.uploadToken(qiniuBucket, null, OcsConstant.SECONDS_OF_ONE_DAY, null, true);
             // 将获取的token保存到缓存中，并且设置有效期24小时
             redisCacheService.setValueByString(RedisCacheConstant.QnEventImageToken, token);
-            redisCacheService.setExpireByKey(RedisCacheConstant.QnEventImageToken, LolConstant.SECONDS_OF_ONE_DAY);
+            redisCacheService.setExpireByKey(RedisCacheConstant.QnEventImageToken, OcsConstant.SECONDS_OF_ONE_DAY);
         }
         return token;
     }

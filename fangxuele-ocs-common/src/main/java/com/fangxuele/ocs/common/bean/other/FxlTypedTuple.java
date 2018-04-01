@@ -10,7 +10,8 @@ public class FxlTypedTuple implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public FxlTypedTuple(){}
+    public FxlTypedTuple() {
+    }
 
     private Double score;
 
