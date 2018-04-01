@@ -105,11 +105,11 @@ public class SystemDictionaryController {
             resultMap = new HashMap<>();
             dictionaryLomsService.initDictionary();
             resultMap.put("success", "true");
-            resultMap.put("msg", "Service-LOMS 同步成功！");
+            resultMap.put("msg", "Service-COMS 同步成功！");
         } catch (Exception e) {
             resultMap = new HashMap<>();
             resultMap.put("success", "false");
-            resultMap.put("msg", "Service-LOMS 同步失败！<br/>" + e.getMessage());
+            resultMap.put("msg", "Service-COMS 同步失败！<br/>" + e.getMessage());
             logger.error(new StringBuilder("同步全局参数失败失败！<br/>").append(ExceptionUtil.stackTraceText(e)).toString());
         } finally {
             resultList.add(resultMap);

@@ -32,7 +32,7 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("亲子活动年卡-地球总部-LOMS")
+                .title("亲子活动年卡-地球总部-COMS")
                 .description("亲子活动年卡，你的欢乐年华")
                 .termsOfServiceUrl("http://m.fangxuele.com/t/#/home")
                 .contact(new Contact("北京行知合一科技有限公司", "http://www.fangxuele.com/", ""))
