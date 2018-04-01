@@ -7,7 +7,7 @@ import com.fangxuele.ocs.mapper.domain.TSysRolePermissionKey;
 import java.util.List;
 
 public interface TSysRolePermissionMapper {
-    int deleteByPrimaryKey(TSysRolePermissionKey key);
+    int deleteByPrimaryKey(Long roleId);
 
     int insert(TSysRolePermission record);
 
