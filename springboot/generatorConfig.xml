@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+	<context id="context1">
+		<!-- 自动实现序列化，toString,equals等功能 -->
+		<plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+		<plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
+		<plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" />
+		<commentGenerator>
+			<property name="suppressDate" value="true" />
+			<!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+			<property name="suppressAllComments" value="true" />
+		</commentGenerator>
+		<jdbcConnection connectionURL="jdbc:mysql://localhost:3306/test"
+			driverClass="com.mysql.jdbc.Driver" password="root" userId="root" />
+		<javaModelGenerator targetPackage="cn.xyy.springboot.springboot.domain"
+			targetProject="springboot" />
+		<sqlMapGenerator targetPackage="cn.xyy.springboot.springboot.mapper"
+			targetProject="springboot" />
+		<javaClientGenerator targetPackage="cn.xyy.springboot.springboot.mapper"
+			targetProject="springboot" type="XMLMAPPER" />
+		<table tableName="user"
+			enableCountByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			enableUpdateByExample="false"/>
+	</context>
+</generatorConfiguration>

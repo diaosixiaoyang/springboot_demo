@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"/>
+<title>展示页面</title>
+<!-- 新 Bootstrap 核心 CSS 文件 -->
+<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+<!-- 可选的Bootstrap主题文件（一般不使用） -->
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"></script>
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<table class="table table-hover table-bordered">
+		<thead>
+			<tr>
+				<td>id</td>
+				<td>账户</td>
+				<td>密码</td>
+				<td>姓名</td>
+				<td>状态</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each = "user : ${users}">
+				<td th:text = "${user.id}"></td>
+				<td th:text = "${user.username}"></td>
+				<td th:text = "${user.password}"></td>
+				<td th:text = "${user.name}"></td>
+				<td th:text = "${user.status}?激活:失效"></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>
